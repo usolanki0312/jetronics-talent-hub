@@ -15,6 +15,7 @@ import {
   Settings,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 const services = [
   {
@@ -153,14 +154,18 @@ const ServicesPage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="space-y-24">
               {services.map((service, index) => (
-                <div
+                <motion.div
                   key={index}
                   className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${
                     index % 2 === 0 ? "" : "lg:grid-flow-dense"
                   }`}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
                 >
                   {/* Content */}
-                  <div
+                  <motion.div
                     className={
                       service.imagePosition === "right"
                         ? "lg:col-start-1 mt-6"
@@ -168,6 +173,10 @@ const ServicesPage = () => {
                         
                     }
                     id={service.sectionid}
+                    initial={{ opacity: 0, x: service.imagePosition === "right" ? -30 : 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                   >
                     <h2 className="text-4xl font-bold text-foreground mb-6">
                       {service.title}
@@ -175,15 +184,19 @@ const ServicesPage = () => {
                     <p className="text-xl text-muted-foreground leading-relaxed">
                       {service.description}
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* Image */}
-                  <div
+                  <motion.div
                     className={
                       service.imagePosition === "right"
                         ? "lg:col-start-2"
                         : "lg:col-start-1 lg:row-start-1"
                     }
+                    initial={{ opacity: 0, x: service.imagePosition === "right" ? 30 : -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
                   >
                     <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                       <img
@@ -193,8 +206,8 @@ const ServicesPage = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -206,35 +219,42 @@ const ServicesPage = () => {
               {cards.map((service, index) => {
                 const Icon = service.icon;
                 return (
-                  <Card
+                  <motion.div
                     key={index}
-                    className="border-border bg-card hover:shadow-xl transition-all duration-300"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
                   >
-                    <CardHeader>
-                      <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4" >
-                        <Icon className="h-7 w-7 text-primary" />
-                      </div>
-                      <CardTitle className="text-2xl">
-                        {service.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-6">
-                        {service.description}
-                      </p>
-                      <ul className="space-y-2 text-left">
-                        {service.features.map((feature, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-start gap-2 text-sm text-muted-foreground"
-                          >
-                            <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span>{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                  </Card>
+                    <Card
+                      className="border-border bg-card hover:shadow-xl transition-all duration-300 h-full"
+                    >
+                      <CardHeader>
+                        <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4" >
+                          <Icon className="h-7 w-7 text-primary" />
+                        </div>
+                        <CardTitle className="text-2xl">
+                          {service.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground mb-6">
+                          {service.description}
+                        </p>
+                        <ul className="space-y-2 text-left">
+                          {service.features.map((feature, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-2 text-sm text-muted-foreground"
+                            >
+                              <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 );
               })}
             </div>

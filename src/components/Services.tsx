@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Code, Users, Zap, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 
 const services = [
   {
@@ -41,23 +42,29 @@ const Services = () => {
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
-              <Card 
+              <motion.div
                 key={index}
-                className="border-border bg-card hover:shadow-xl transition-all duration-300 hover:-translate-y-2 animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               >
-                <CardContent className="p-6">
-                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <Icon className="h-7 w-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-card-foreground mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
-                </CardContent>
-              </Card>
+                <Card 
+                  className="border-border bg-card hover:shadow-xl transition-all duration-300 hover:-translate-y-2 h-full"
+                >
+                  <CardContent className="p-6">
+                    <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <Icon className="h-7 w-7 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-card-foreground mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {service.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             );
           })}
         </div>

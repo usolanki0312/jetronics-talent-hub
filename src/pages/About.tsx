@@ -36,7 +36,7 @@ const About = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-5xl sm:text-6xl font-bold text-primary-foreground mb-6">
-                About Jetronics
+                About Jetronixs
               </h1>
               <p className="text-xl text-primary-foreground/90 leading-relaxed">
                 Your trusted partner in IT staffing and software services solutions
@@ -51,7 +51,7 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl font-bold text-foreground mb-8 text-center">Our Mission</h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                At Jetronics, our mission is to bridge the gap between exceptional IT talent and organizations seeking to drive innovation. We specialize in providing top-tier software professionals on a contract basis, enabling businesses across the USA to scale their technical capabilities efficiently and effectively.
+                At Jetronixs, our mission is to bridge the gap between exceptional IT talent and organizations seeking to drive innovation. We specialize in providing top-tier software professionals on a contract basis, enabling businesses across the USA to scale their technical capabilities efficiently and effectively.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 We believe that the right talent can transform businesses. That's why we're committed to rigorous vetting processes, ensuring every professional we place meets the highest standards of technical excellence and cultural fit.
@@ -94,7 +94,7 @@ const About = () => {
               <h2 className="text-4xl font-bold text-foreground mb-8 text-center">Our Expertise</h2>
               <div className="space-y-6">
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  Founded with a vision to revolutionize IT staffing, Jetronics has grown to become a trusted name in software services across the United States. Our deep understanding of the technology landscape, combined with our extensive network of skilled professionals, positions us uniquely to serve both emerging startups and established enterprises.
+                  Founded with a vision to revolutionize IT staffing, Jetronixs has grown to become a trusted name in software services across the United States. Our deep understanding of the technology landscape, combined with our extensive network of skilled professionals, positions us uniquely to serve both emerging startups and established enterprises.
                 </p>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   <strong className="text-foreground">Our Specializations:</strong>

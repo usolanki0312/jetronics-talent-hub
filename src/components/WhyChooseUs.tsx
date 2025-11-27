@@ -16,7 +16,7 @@ const WhyChooseUs = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Why Choose Jetronics?
+              Why Choose Jetronixs?
             </h2>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
               We understand that finding the right talent is critical to your success. That's why we've built a reputation for delivering exceptional professionals who not only meet but exceed expectations.

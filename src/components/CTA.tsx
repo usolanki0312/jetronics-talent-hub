@@ -10,7 +10,7 @@ const CTA = () => {
             Ready to Build Your Dream Team?
           </h2>
           <p className="text-xl text-primary-foreground/90 mb-12 leading-relaxed">
-            Let's discuss how Jetronics can provide the software talent you need to achieve your goals. Contact us today for a consultation.
+            Let's discuss how Jetronixs can provide the software talent you need to achieve your goals. Contact us today for a consultation.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

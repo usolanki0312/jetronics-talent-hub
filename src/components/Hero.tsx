@@ -25,7 +25,7 @@ const Hero = () => {
             <span className="block text-accent">On Your Terms</span>
           </h1>
           <p className="text-xl sm:text-2xl text-primary-foreground/90 mb-8 leading-relaxed">
-            Jetronics connects you with exceptional contract software professionals who drive innovation and deliver results. Scale your team with confidence.
+            Jetronixs connects you with exceptional contract software professionals who drive innovation and deliver results. Scale your team with confidence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 

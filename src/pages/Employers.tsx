@@ -86,7 +86,7 @@ const Employers = () => {
                 For Employers & Clients
               </h1>
               <p className="text-xl text-primary-foreground/90 leading-relaxed mb-8">
-                Partner with Jetronics to build exceptional technology teams. We connect you with top-tier IT talent tailored to your specific needs.
+                Partner with Jetronixs to build exceptional technology teams. We connect you with top-tier IT talent tailored to your specific needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
@@ -114,7 +114,7 @@ const Employers = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-foreground mb-4">
-                Why Choose Jetronics?
+                Why Choose Jetronixs?
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 We make IT staffing simple, fast, and reliable

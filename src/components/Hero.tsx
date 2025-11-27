@@ -41,7 +41,7 @@ const Hero = () => {
             </Button>
             <Button 
               size="lg" 
-              variant="outline"
+              variant="default"
               className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8 py-6 backdrop-blur-sm"
               onClick={() => navigate('/services')}
             >
@@ -52,7 +52,7 @@ const Hero = () => {
       </div>
 
       {/* Decorative Elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      {/* <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" /> */}
     </section>
   );
 };

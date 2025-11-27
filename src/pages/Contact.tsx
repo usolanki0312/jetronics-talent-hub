@@ -76,8 +76,9 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-card-foreground mb-1">Phone</h3>
-                        <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                        <p className="text-sm text-muted-foreground">Mon-Fri 9am-6pm EST</p>
+                        <p className="text-muted-foreground">+1 (302) 214-7592</p>
+                        <p className="text-muted-foreground">+1 (302) 216-2057</p>
+                        {/* <p className="text-sm text-muted-foreground">Mon-Fri 9am-6pm EST</p> */}
                       </div>
                     </div>
 
@@ -88,7 +89,7 @@ const Contact = () => {
                       <div>
                         <h3 className="font-semibold text-card-foreground mb-1">Email</h3>
                         <p className="text-muted-foreground">contact@jetronics.com</p>
-                        <p className="text-muted-foreground">careers@jetronics.com</p>
+                         
                       </div>
                     </div>
 
@@ -99,15 +100,12 @@ const Contact = () => {
                       <div>
                         <h3 className="font-semibold text-card-foreground mb-1">Address</h3>
                         <p className="text-muted-foreground">
-                          123 Tech Boulevard<br />
-                          Suite 500<br />
-                          San Francisco, CA 94105<br />
-                          United States
+                          1st F, 33/C/S-3, <br /> Scheme 78-III, Sec F, Slice 3, <br /> Indore – 452010
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-4">
+                    {/* <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <Clock className="h-6 w-6 text-primary" />
                       </div>
@@ -118,7 +116,7 @@ const Contact = () => {
                           Saturday - Sunday: Closed
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </CardContent>
                 </Card>
               </div>
@@ -182,11 +180,11 @@ const Contact = () => {
                             <SelectValue placeholder="Select inquiry type" />
                           </SelectTrigger>
                           <SelectContent>
+                            <SelectItem value="general">General Query</SelectItem>
                             <SelectItem value="talent">Request Talent</SelectItem>
-                            <SelectItem value="job">Submit Job Order</SelectItem>
+                            {/* <SelectItem value="job">Submit Job Order</SelectItem> */}
                             <SelectItem value="consulting">IT Consulting</SelectItem>
-                            <SelectItem value="partnership">Partnership Inquiry</SelectItem>
-                            <SelectItem value="general">General Question</SelectItem>
+                            {/* <SelectItem value="partnership">Partnership Inquiry</SelectItem> */}
                           </SelectContent>
                         </Select>
                       </div>

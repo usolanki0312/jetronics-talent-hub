@@ -41,8 +41,8 @@ const WhyChooseUs = () => {
             <div className="bg-hero-gradient rounded-2xl p-8 text-primary-foreground shadow-2xl">
               <div className="space-y-8">
                 <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-                  <div className="text-5xl font-bold mb-2">500+</div>
-                  <div className="text-primary-foreground/80">Successful Placements</div>
+                  <div className="text-5xl font-bold mb-2">30+</div>
+                  <div className="text-primary-foreground/80">Years of Experience</div>
                 </div>
                 <div className="animate-fade-in" style={{ animationDelay: '400ms' }}>
                   <div className="text-5xl font-bold mb-2">98%</div>

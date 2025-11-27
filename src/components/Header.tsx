@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../assets/Logo.png";
 
 const Header = () => {
   const location = useLocation();
@@ -11,28 +12,46 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
             <Link to="/">
-              <span className="text-2xl font-bold text-primary">Jetronixs</span>
+              <img
+                src={logo}
+                alt="Jentronixs Logo"
+                className="h-14 w-auto object-contain sm:h-16"
+              />
             </Link>
           </div>
-          
+
           <div className="hidden md:flex items-center space-x-8">
-            <Link 
-              to="/services" 
-              className={`text-foreground hover:text-primary transition-colors font-medium ${isActive('/services') ? 'text-primary' : ''}`}
+            <Link
+              to="/"
+              className={`text-foreground hover:text-primary transition-colors font-medium ${
+                isActive("/") ? "text-primary" : ""
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/services"
+              className={`text-foreground hover:text-primary transition-colors font-medium ${
+                isActive("/services") ? "text-primary" : ""
+              }`}
             >
               Services
             </Link>
-            <Link 
-              to="/employers" 
-              className={`text-foreground hover:text-primary transition-colors font-medium ${isActive('/employers') ? 'text-primary' : ''}`}
+            <Link
+              to="/employers"
+              className={`text-foreground hover:text-primary transition-colors font-medium ${
+                isActive("/employers") ? "text-primary" : ""
+              }`}
             >
               For Employers
             </Link>
-            <Link 
-              to="/about" 
-              className={`text-foreground hover:text-primary transition-colors font-medium ${isActive('/about') ? 'text-primary' : ''}`}
+            <Link
+              to="/about"
+              className={`text-foreground hover:text-primary transition-colors font-medium ${
+                isActive("/about") ? "text-primary" : ""
+              }`}
             >
-              About
+              About us
             </Link>
           </div>
 

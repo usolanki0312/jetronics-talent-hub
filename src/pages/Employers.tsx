@@ -96,14 +96,14 @@ const Employers = () => {
                 >
                   Request Talent
                 </Button>
-                <Button 
+                {/* <Button 
                   size="lg" 
-                  variant="outline"
+                  variant="default"
                   className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 backdrop-blur-sm"
                   onClick={() => navigate('/contact')}
                 >
                   Submit Job Order
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>

@@ -73,20 +73,20 @@ const Footer = () => {
             <h4 className="font-semibold text-lg">Company</h4>
             <ul className="space-y-3 text-primary-foreground/80">
               <li>
-                <a
-                  href="/about"
+                <Link
+                  to="/about"
                   className="hover:text-accent transition-colors"
                 >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="hover:text-accent transition-colors"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

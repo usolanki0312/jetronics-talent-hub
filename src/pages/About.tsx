@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 const values = [
   {
     icon: Target,
-    title: "Excellences",
+    title: "Excellence",
     description: "We maintain the highest standards in talent acquisition and client service delivery."
   },
   {

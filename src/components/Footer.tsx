@@ -12,7 +12,7 @@ const Footer = () => {
             <Link to="/">
               <img
                 src={logo}
-                alt="Jentronixs Logo"
+                alt="Jetronixs Logo"
                 className="h-14 w-auto object-contain sm:h-16"
               />
             </Link>
@@ -95,7 +95,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-lg">Contact</h4>
             <ul className="space-y-3 text-primary-foreground/80">
-              <li className="leading-relaxed">contact@jentronixs.com</li>
+              <li className="leading-relaxed">contact@jetronixs.com</li>
               <li className="leading-relaxed">+1 (302) 214-7592 <br /> +1 (302) 216-2057</li>
               {/* <li className="leading-relaxed">+1 (302) 216-2057</li> */}
               <li className="leading-relaxed">
@@ -108,7 +108,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-primary-foreground/20 pt-8 text-center text-primary-foreground/60">
           <p>
-            &copy; {new Date().getFullYear()} Jentronixs. All rights reserved.
+            &copy; {new Date().getFullYear()} Jetronixs. All rights reserved.
           </p>
         </div>
       </div>

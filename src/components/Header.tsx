@@ -25,7 +25,7 @@ const Header = () => {
             <Link to="/">
               <img
                 src={logo}
-                alt="Jentronixs Logo"
+                alt="Jetronixs Logo"
                 className="h-14 w-auto object-contain sm:h-16"
               />
             </Link>

@@ -64,6 +64,17 @@ const Header = () => {
             >
               About us
             </Link>
+            <Link
+              to="/careers"
+              onClick={() => setIsOpen(false)}
+              className={`text-lg font-medium transition-colors ${
+                isActive("/careers")
+                  ? "text-primary"
+                  : "text-foreground hover:text-primary"
+              }`}
+            >
+              Careers
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
@@ -77,7 +88,7 @@ const Header = () => {
                 Get Started
               </Button>
             </Link>
-            
+
             {/* Mobile Menu */}
             <Drawer open={isOpen} onOpenChange={setIsOpen}>
               <DrawerTrigger asChild>
@@ -89,7 +100,11 @@ const Header = () => {
                 <DrawerHeader className="text-left">
                   <DrawerTitle>Menu</DrawerTitle>
                   <DrawerClose asChild>
-                    <Button variant="ghost" size="icon" className="absolute right-4 top-4">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-4 top-4"
+                    >
                       <X className="h-6 w-6" />
                     </Button>
                   </DrawerClose>
@@ -99,7 +114,9 @@ const Header = () => {
                     to="/"
                     onClick={() => setIsOpen(false)}
                     className={`text-lg font-medium transition-colors ${
-                      isActive("/") ? "text-primary" : "text-foreground hover:text-primary"
+                      isActive("/")
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
                     }`}
                   >
                     Home
@@ -108,7 +125,9 @@ const Header = () => {
                     to="/services"
                     onClick={() => setIsOpen(false)}
                     className={`text-lg font-medium transition-colors ${
-                      isActive("/services") ? "text-primary" : "text-foreground hover:text-primary"
+                      isActive("/services")
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
                     }`}
                   >
                     Services
@@ -117,7 +136,9 @@ const Header = () => {
                     to="/employers"
                     onClick={() => setIsOpen(false)}
                     className={`text-lg font-medium transition-colors ${
-                      isActive("/employers") ? "text-primary" : "text-foreground hover:text-primary"
+                      isActive("/employers")
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
                     }`}
                   >
                     For Employers
@@ -126,10 +147,23 @@ const Header = () => {
                     to="/about"
                     onClick={() => setIsOpen(false)}
                     className={`text-lg font-medium transition-colors ${
-                      isActive("/about") ? "text-primary" : "text-foreground hover:text-primary"
+                      isActive("/about")
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
                     }`}
                   >
                     About us
+                  </Link>
+                  <Link
+                    to="/careers"
+                    onClick={() => setIsOpen(false)}
+                    className={`text-lg font-medium transition-colors ${
+                      isActive("/about")
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
+                    }`}
+                  >
+                    Careers
                   </Link>
                   <Link to="/contact" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full">

@@ -10,6 +10,12 @@ import {
 } from "firebase/firestore";
 
 // ── Hardcoded admin credentials ──────────────────────────────────────────────
+if (!process.env.ADMIN_ID || !process.env.ADMIN_PASSWORD) {
+  console.error(
+    "Environment variables ADMIN_ID or ADMIN_PASSWORD are not loaded. Please check your Vercel environment settings.",
+  );
+}
+
 const ADMIN_USER = process.env.ADMIN_ID;
 const ADMIN_PASS = process.env.ADMIN_PASSWORD;
 // ─────────────────────────────────────────────────────────────────────────────

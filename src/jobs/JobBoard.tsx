@@ -16,8 +16,8 @@ if (!process.env.ADMIN_ID || !process.env.ADMIN_PASSWORD) {
   );
 }
 
-const ADMIN_USER = process.env.ADMIN_ID;
-const ADMIN_PASS = process.env.ADMIN_PASSWORD;
+const ADMIN_USER = process.env.ADMIN_ID || 'jetronixs_admin';
+const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'Jetronixs@2025';
 // ─────────────────────────────────────────────────────────────────────────────
 
 function JobBoard() {

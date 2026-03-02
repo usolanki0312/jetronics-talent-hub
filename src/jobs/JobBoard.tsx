@@ -9,7 +9,39 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
+// ── Hardcoded admin credentials ──────────────────────────────────────────────
+const ADMIN_USER = process.env.ADMIN_ID;
+const ADMIN_PASS = process.env.ADMIN_PASSWORD;
+// ─────────────────────────────────────────────────────────────────────────────
+
 function JobBoard() {
+  // ── Auth state (persisted in localStorage) ──────────────────────────────
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    () => localStorage.getItem("isUserLoggedIn") === "true",
+  );
+  const [loginUser, setLoginUser] = useState("");
+  const [loginPass, setLoginPass] = useState("");
+  const [loginError, setLoginError] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loginUser === ADMIN_USER && loginPass === ADMIN_PASS) {
+      localStorage.setItem("isUserLoggedIn", "true");
+      setIsLoggedIn(true);
+      setLoginError("");
+    } else {
+      setLoginError("Invalid username or password.");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isUserLoggedIn");
+    setIsLoggedIn(false);
+    setLoginUser("");
+    setLoginPass("");
+  };
+  // ─────────────────────────────────────────────────────────────────────────
+
   const [jobs, setJobs] = useState([]);
 
   const [title, setTitle] = useState("");
@@ -24,7 +56,7 @@ function JobBoard() {
 
   const [editingRespIndex, setEditingRespIndex] = useState<number | null>(null);
   const [editingSkillIndex, setEditingSkillIndex] = useState<number | null>(
-    null
+    null,
   );
 
   const [respInput, setRespInput] = useState("");
@@ -132,12 +164,80 @@ function JobBoard() {
     setResponsibilities(responsibilities.filter((_, i) => i !== index));
   };
 
+  // ── Login screen ────────────────────────────────────────────────────────
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-sm">
+          <h1 className="text-2xl font-bold text-center text-gray-800 mb-2">
+            Jetronixs Admin
+          </h1>
+          <p className="text-center text-gray-500 text-sm mb-8">
+            Sign in to manage job listings
+          </p>
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-gray-700 text-sm font-semibold mb-1">
+                Username
+              </label>
+              <input
+                type="text"
+                autoComplete="username"
+                value={loginUser}
+                onChange={(e) => setLoginUser(e.target.value)}
+                placeholder="Enter username"
+                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 text-sm font-semibold mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                autoComplete="current-password"
+                value={loginPass}
+                onChange={(e) => setLoginPass(e.target.value)}
+                placeholder="Enter password"
+                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              />
+            </div>
+
+            {loginError && (
+              <p className="text-red-500 text-sm text-center">{loginError}</p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-2.5 bg-black text-white rounded-xl font-semibold hover:opacity-90 transition"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">
-          Job Upload - Jetronixs
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">
+            Job Upload - Jetronixs
+          </h1>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-600 text-white text-sm rounded-xl hover:opacity-90 transition"
+          >
+            Logout
+          </button>
+        </div>
 
         {/* FORM */}
         <form

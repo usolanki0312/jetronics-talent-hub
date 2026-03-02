@@ -12,7 +12,7 @@ import {
 // ── Hardcoded admin credentials ──────────────────────────────────────────────
 if (!process.env.ADMIN_ID || !process.env.ADMIN_PASSWORD) {
   console.error(
-    "Environment variables ADMIN_ID or ADMIN_PASSWORD are not loaded. Please check your Vercel environment settings.",
+    "Environment variables ADMIN_ID or ADMIN_PASSWORD are not loaded YET. Please check your Vercel environment settings.",
   );
 }
 

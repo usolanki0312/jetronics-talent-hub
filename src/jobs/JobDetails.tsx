@@ -23,6 +23,7 @@ const JobDetails = () => {
   };
 
   const [form, setForm] = useState(initialForm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isFormValid =
     form.fullName.trim() !== "" &&
@@ -114,6 +115,7 @@ const JobDetails = () => {
                 className="grid gap-5"
                 onSubmit={async (e) => {
                   e.preventDefault();
+                  setIsSubmitting(true);
 
                   const formData = new FormData();
                   formData.append("fullName", form.fullName);
@@ -133,7 +135,7 @@ const JobDetails = () => {
                       {
                         method: "POST",
                         body: formData,
-                      }
+                      },
                     );
 
                     console.log("Status:", res.status);
@@ -153,6 +155,8 @@ const JobDetails = () => {
                     console.error("FETCH ERROR:", err);
                     alert("Server error");
                     setForm(initialForm);
+                  } finally {
+                    setIsSubmitting(false);
                   }
                 }}
               >
@@ -163,8 +167,9 @@ const JobDetails = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full border p-3 rounded-xl"
+                    className="w-full border p-3 rounded-xl disabled:opacity-50"
                     value={form.fullName}
+                    disabled={isSubmitting}
                     onChange={(e) =>
                       setForm({ ...form, fullName: e.target.value })
                     }
@@ -178,8 +183,9 @@ const JobDetails = () => {
                   </label>
                   <input
                     type="email"
-                    className="w-full border p-3 rounded-xl"
+                    className="w-full border p-3 rounded-xl disabled:opacity-50"
                     value={form.email}
+                    disabled={isSubmitting}
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
                     }
@@ -193,8 +199,9 @@ const JobDetails = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full border p-3 rounded-xl"
+                    className="w-full border p-3 rounded-xl disabled:opacity-50"
                     value={form.phone}
+                    disabled={isSubmitting}
                     onChange={(e) =>
                       setForm({ ...form, phone: e.target.value })
                     }
@@ -208,8 +215,9 @@ const JobDetails = () => {
                   </label>
                   <textarea
                     rows={5}
-                    className="w-full border p-3 rounded-xl"
+                    className="w-full border p-3 rounded-xl disabled:opacity-50"
                     value={form.coverLetter}
+                    disabled={isSubmitting}
                     onChange={(e) =>
                       setForm({ ...form, coverLetter: e.target.value })
                     }
@@ -223,7 +231,8 @@ const JobDetails = () => {
                   </label>
                   <input
                     type="file"
-                    className="w-full border p-3 rounded-xl"
+                    className="w-full border p-3 rounded-xl disabled:opacity-50"
+                    disabled={isSubmitting}
                     onChange={(e) =>
                       setForm({
                         ...form,
@@ -238,10 +247,11 @@ const JobDetails = () => {
                   <input
                     type="checkbox"
                     checked={form.agreed}
+                    disabled={isSubmitting}
                     onChange={(e) =>
                       setForm({ ...form, agreed: e.target.checked })
                     }
-                    className="mt-1"
+                    className="mt-1 disabled:opacity-50"
                   />
                   <p className="text-sm">
                     By using this form you agree with the storage and handling
@@ -253,14 +263,40 @@ const JobDetails = () => {
                 {/* Submit */}
                 <button
                   type="submit"
-                  disabled={!isFormValid}
-                  className={`py-3 rounded-xl text-white transition ${
-                    isFormValid
+                  disabled={!isFormValid || isSubmitting}
+                  className={`py-3 rounded-xl text-white transition flex items-center justify-center gap-2 ${
+                    isFormValid && !isSubmitting
                       ? "bg-primary hover:opacity-90"
                       : "bg-gray-400 cursor-not-allowed"
                   }`}
                 >
-                  Submit
+                  {isSubmitting ? (
+                    <>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v8H4z"
+                        />
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </form>
             </CardContent>

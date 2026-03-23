@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebase.js";
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 import {
   collection,
   addDoc,
@@ -9,43 +11,36 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-// ── Hardcoded admin credentials ──────────────────────────────────────────────
-if (!process.env.ADMIN_ID || !process.env.ADMIN_PASSWORD) {
-  console.error(
-    "Environment variables ADMIN_ID or ADMIN_PASSWORD are not loaded YET. Please check your Vercel environment settings.",
-  );
-}
 
-const ADMIN_USER = process.env.ADMIN_ID;
-const ADMIN_PASS = process.env.ADMIN_PASSWORD;
 // ─────────────────────────────────────────────────────────────────────────────
 
 function JobBoard() {
-  // ── Auth state (persisted in localStorage) ──────────────────────────────
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    () => localStorage.getItem("isUserLoggedIn") === "true",
-  );
+  
   const [loginUser, setLoginUser] = useState("");
   const [loginPass, setLoginPass] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [user, setUser]=useState(null);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (loginUser === ADMIN_USER && loginPass === ADMIN_PASS) {
-      localStorage.setItem("isUserLoggedIn", "true");
-      setIsLoggedIn(true);
-      setLoginError("");
-    } else {
-      setLoginError("Invalid username or password.");
-    }
-  };
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
-  const handleLogout = () => {
-    localStorage.removeItem("isUserLoggedIn");
-    setIsLoggedIn(false);
-    setLoginUser("");
-    setLoginPass("");
-  };
+  return () => unsubscribe();
+}, []);
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    await signInWithEmailAndPassword(auth, loginUser, loginPass);
+    setLoginError("");
+  } catch (err) {
+    setLoginError("Invalid email or password");
+  }
+};
+
+  const handleLogout = async () => {
+  await signOut(auth);
+};
   // ─────────────────────────────────────────────────────────────────────────
 
   const [jobs, setJobs] = useState([]);
@@ -171,7 +166,7 @@ function JobBoard() {
   };
 
   // ── Login screen ────────────────────────────────────────────────────────
-  if (!isLoggedIn) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="bg-white p-10 rounded-2xl shadow-lg w-full max-w-sm">

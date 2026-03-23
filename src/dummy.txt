@@ -1,0 +1,512 @@
+// badgeconnect_user/src/models/globalUser.model.js
+
+import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
+
+const globalUserSchema = new mongoose.Schema(
+{
+  userId:{
+    type:String,
+    default:uuidv4,
+    unique:true,
+    immutable:true,
+    index:true
+  },
+
+  firstName:{ type:String, required:true, trim:true },
+  lastName:{ type:String, required:true, trim:true },
+
+  email:{
+    type:String,
+    lowercase:true,
+    trim:true,
+    unique:true,
+    sparse:true,
+    index:true
+  },
+
+  mobile:{
+    type:String,
+    unique:true,
+    sparse:true,
+    index:true
+  },
+
+  userScopes:{
+    type:[String],
+    enum:["admin","issuer","earner"],
+    default:[]
+  },
+
+  status:{
+    type:String,
+    enum:["active","inactive"],
+    default:"active"
+  },
+
+  createdBy:{ type:String, default:null },
+  lastUpdatedBy:{ type:String, default:null },
+
+  isDeleted:{ type:Boolean, default:false }
+
+},
+{timestamps:true}
+);
+
+export default mongoose.model("GlobalUser",globalUserSchema);
+
+
+
+
+
+// NOTE- Now when admin will add an organization, above schema and below schema will be used.
+
+// badgeconnect_user/src/models/organization.model.js
+
+import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
+
+const organizationSchema = new mongoose.Schema(
+{
+  orgId:{
+    type:String,
+    default:uuidv4,
+    unique:true,
+    immutable:true,
+    index:true
+  },
+
+  orgName:{ type:String, required:true },
+
+  orgEmail:{
+    type:String,
+    required:true,
+    unique:true,
+    lowercase:true,
+    trim:true
+  },
+
+  website:String,
+  supportEmail:String,
+  postal:String,
+
+  reminderSettings:{
+    enabled:{ type:Boolean, default:true },
+    frequency:{ type:String, enum:["daily","weekly"], default:"weekly" },
+    weeklyDay:{ type:Number, min:0, max:6, default:1 },
+    time:{ type:String, default:"11:00" },
+    timezone:{ type:String, default:"Asia/Kolkata" },
+    lastRunAt:{ type:Date, default:null }
+  },
+
+  createdByUserId:{ type:String, required:true, index:true },
+
+  status:{
+    type:String,
+    enum:["active","inactive"],
+    default:"active"
+  },
+
+  isDeleted:{ type:Boolean, default:false }
+
+},
+{timestamps:true}
+);
+
+export default mongoose.model("Organization",organizationSchema);
+
+
+
+
+// badgeconnect_user/src/models/orgUser.model.js
+
+import mongoose from "mongoose";
+
+const orgUserSchema = new mongoose.Schema(
+{
+  userId:{ type:String, required:true, index:true },
+  orgId:{ type:String, required:true, index:true },
+
+  role:{
+    type:String,
+    enum:["primaryContact","admin"],
+    required:true
+  },
+
+  isPrimary:{ type:Boolean, default:false },
+
+  status:{
+    type:String,
+    enum:["active","inactive"],
+    default:"active"
+  }
+
+},
+{timestamps:true}
+);
+
+orgUserSchema.index(
+{userId:1, orgId:1},
+{unique:true}
+);
+
+export default mongoose.model("OrgUser", orgUserSchema);
+
+
+// badges.model.js
+
+const badgesSchema = new mongoose.Schema(
+{
+  orgId:{
+    type:String,
+    required:true,
+    unique:true,
+    index:true
+  },
+
+  badges:{
+    type:[badgeSchema], // KEEP EXACT SAME
+    default:[]
+  },
+
+  lastSyncedAt:{
+    type:Date,
+    default:null
+  }
+
+},
+{timestamps:true}
+);
+
+
+
+
+NOTE- Now when an organization will issued badges, below schemas is how we will handle it with using user schema
+
+
+// badgeconnect_user/src/models/earnerProfile.model.js
+
+import mongoose from "mongoose";
+import { nanoid } from "nanoid";
+
+const earnerProfileSchema = new mongoose.Schema(
+{
+  profileId:{ type:String, default:() => nanoid(12), unique:true, index:true },
+
+  userId:{ type:String, required:true, unique:true, index:true },
+
+  profileImage:String,
+  alternateEmail:String,
+
+  linkedProfileIds:{
+    type:[String],
+    default:[]
+  },
+
+  status:{
+    type:String,
+    enum:["active","inactive"],
+    default:"active"
+  }
+
+},
+{timestamps:true}
+);
+
+export default mongoose.model("EarnerProfile",earnerProfileSchema);
+
+
+
+
+
+// earnerBadges.model.js
+
+import mongoose from "mongoose";
+
+const badgeSchema = new mongoose.Schema(
+{
+  badgeId:Number,
+  issueDate:Date,
+  location:String,
+  company:String,
+  title:String,
+  expiryDate:Date,
+
+  issuerName:String,
+  issuerNotes:String,
+
+  licenseName:String,
+  licenseNumber:String,
+  issuerReferenceLink:String,
+
+  artifact:String,
+  certificatePdf:String,
+
+  paymentStatus:{ type:Boolean, default:false },
+
+  issuedToBadgeCert:{ type:Boolean, default:false },
+  issueFailed:{ type:Boolean, default:false },
+  badgeCertIssuedAt:{ type:Date, default:null }
+
+},{_id:false});
+
+const earnerBadgesSchema = new mongoose.Schema(
+{
+  profileId:{ type:String, required:true, index:true },
+  orgId:{ type:String, required:true, index:true },
+
+  issuerUserId:{ type:String, required:true, index:true },
+
+  badges:{
+    type:[badgeSchema],
+    default:[]
+  },
+
+  isDeleted:{ type:Boolean, default:false }
+
+},{timestamps:true});
+
+earnerBadgesSchema.index(
+{profileId:1, orgId:1},
+{unique:true}
+);
+
+earnerBadgesSchema.index({profileId:1});
+
+export default mongoose.model("EarnerBadges", earnerBadgesSchema);
+
+
+
+
+// badgeconnect_user/src/models/userSession.model.js
+
+import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
+
+const userSessionSchema = new mongoose.Schema(
+{
+  sessionId:{
+    type:String,
+    default:uuidv4,
+    unique:true,
+    immutable:true,
+    index:true
+  },
+
+  userId:{ type:String, required:true, index:true },
+
+  refreshToken:{
+    type:String,
+    required:true,
+    unique:true,
+    index:true
+  },
+
+  refreshTokenExpiresAt:{ type:Date, required:true },
+
+  loginScope:{
+    type:String,
+    enum:["admin","issuer","earner"],
+    required:true
+  },
+
+  orgId:{ type:String, default:null, index:true },
+  profileId:{ type:String, default:null, index:true },
+
+  lastLoginIdentifier:String
+
+},
+{timestamps:true}
+);
+
+export default mongoose.model("UserSession", userSessionSchema);
+
+
+
+// <------------------------------ Ecommerce Module Schema  ----------------------------->
+
+
+
+const addressSchema = new mongoose.Schema({
+  userId:{ type:String, required:true, index:true },
+
+  addresses:[
+    {
+      _id:true, // avoid mongo auto id if you insist
+
+      fullName:String,
+      mobile:String,
+      email:String,
+                      // Note: Do we need to maintain the addressID
+
+      line1:String,
+      line2:String,
+      city:String,
+      state:String,
+      postalCode:String,
+      country:{ type:String, default:"India" },
+
+      isDefault:{ type:Boolean, default:false },
+
+      createdAt:{ type:Date, default:Date.now }
+    }
+  ]
+
+},{timestamps:true});
+
+// -------------------------------------------
+
+const productSchema = new mongoose.Schema({
+  productId:{
+    type:String,
+    default:() => nanoid(12),
+    unique:true,
+    index:true
+  },
+
+  // orgId:{ type:String, required:true, index:true },
+
+  title:{ type:String, required:true },
+  description:String,
+
+  price:{ type:Number, required:true },
+  currency:{ type:String, default:"INR" },
+
+  images:[String],
+
+  stock:{ type:Number, default:0 },
+
+  status:{
+    type:String,
+    enum:["active","inactive"],
+    default:"active"
+  },
+
+  metadata:{ type:Object }
+
+},{timestamps:true});
+
+export default mongoose.model("Product", productSchema);
+
+// ----------------------------------------------------
+
+const cartSchema = new mongoose.Schema({
+  userId:{ type:String, required:true, unique:true, index:true },
+  // Note: do we need to maintain the profileId
+
+  items:[
+    {
+      productId:String,
+
+      quantity:{ type:Number, default:1 },
+
+      priceAtAddTime:Number,
+
+      metadata:Object
+    }
+  ],
+
+  isActive:{ type:Boolean, default:true }
+
+},{timestamps:true});
+
+// ---------------------------------------------
+
+const orderSchema = new mongoose.Schema({
+  orderId:{
+    type:String,
+    default:() => nanoid(14),
+    unique:true,
+    index:true
+  },
+
+  userId:{ type:String, required:true, index:true },
+  // Note: do we need to maintain the profileId
+
+  items:[
+    {
+      productId:String,
+      title:String,
+
+      quantity:Number,
+      price:Number,
+
+      metadata:Object
+    }
+  ],
+
+  totalAmount:{ type:Number, required:true },
+
+  currency:{ type:String, default:"INR" },
+
+  addressSnapshot:{ type:Object, required:true },
+
+  paymentStatus:{
+    type:String,
+    enum:["pending","paid","failed"],
+    default:"pending"
+  },
+
+  orderStatus:{
+    type:String,
+    enum:["created","confirmed","shipped","delivered","cancelled"],
+    default:"created"
+  }
+
+},{timestamps:true});
+
+export default mongoose.model("Order", orderSchema);
+
+
+// add a collection for delivery 
+
+
+// ---------------------------------------------------------------
+
+
+const ecommercePaymentSchema = new mongoose.Schema({
+  paymentId:{
+    type:String,
+    default:() => nanoid(14),
+    unique:true,
+    index:true
+  },
+
+  orderId:{ type:String, required:true, index:true },
+
+  userId:{ type:String, required:true, index:true },
+  // Note: do we need to maintain the profileId
+
+  razorpayOrderId:{ type:String, required:true, index:true },
+
+  razorpayPaymentId:{ type:String, default:null },
+  razorpaySignature:{ type:String, default:null },
+
+  amount:{ type:Number, required:true },
+
+  currency:{ type:String, default:"INR" },
+
+  status:{
+    type:String,
+    enum:["created","pending","Success","failed"],
+    default:"created"
+  },
+
+  failureReason:String
+
+},{timestamps:true});
+
+export default mongoose.model("EcommercePayment", ecommercePaymentSchema);
+
+
+// ------------------------------------------------------
+
+
+// need to maintain the collection for main vendors 
+
+
+
+
+
+
+

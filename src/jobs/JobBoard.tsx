@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { db } from "../firebase/firebase.js";
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import {
   collection,
@@ -13,38 +17,39 @@ import {
 import JobCardPreview, {
   type JobCardPreviewHandle,
 } from "../components/JobCardPreview";
-
+import JobPosterDownloadButton from "../components/JobPosterDownloadButton";
 
 // ─────────────────────────────────────────────────────────────────────────────
 
 function JobBoard() {
   const MAX_RESPONSIBILITY_LENGTH = 80;
-  
+
   const [loginUser, setLoginUser] = useState("");
   const [loginPass, setLoginPass] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [user, setUser]=useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
-  return () => unsubscribe();
-}, []);
- const handleLogin = async (e) => {
-  e.preventDefault();
-  try {
-    await signInWithEmailAndPassword(auth, loginUser, loginPass);
-    setLoginError("");
-  } catch (err) {
-    setLoginError("Invalid email or password");
-  }
-};
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, loginUser, loginPass);
+      setLoginError("");
+    } catch (err) {
+      setLoginError("Invalid email or password");
+    }
+  };
 
   const handleLogout = async () => {
-  await signOut(auth);
-};
+    await signOut(auth);
+  };
+
   // ─────────────────────────────────────────────────────────────────────────
 
   const [jobs, setJobs] = useState([]);
@@ -148,7 +153,6 @@ function JobBoard() {
   const addResponsibility = () => {
     const trimmed = respInput.trim().slice(0, MAX_RESPONSIBILITY_LENGTH);
     if (!trimmed) return;
-
     setResponsibilities([...responsibilities, trimmed]);
     setRespInput("");
   };
@@ -163,13 +167,10 @@ function JobBoard() {
 
   const updateResponsibility = (index: number, value: string) => {
     const trimmed = value.trim().slice(0, MAX_RESPONSIBILITY_LENGTH);
-
     if (!trimmed) {
-      // If blank → remove
       removeResponsibility(index);
       return;
     }
-
     const updated = [...responsibilities];
     updated[index] = trimmed;
     setResponsibilities(updated);
@@ -274,6 +275,7 @@ function JobBoard() {
                 onChange={(e) => setJobId(e.target.value)}
               />
             </div>
+
             {/* Job Title */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -318,8 +320,6 @@ function JobBoard() {
               />
             </div>
 
-            {/* Job Type */}
-
             {/* Experience */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -361,8 +361,8 @@ function JobBoard() {
                 placeholder="Add responsibility"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    e.preventDefault(); // stop form submit
-                    addResponsibility(); // add bullet
+                    e.preventDefault();
+                    addResponsibility();
                   }
                 }}
               />
@@ -391,7 +391,6 @@ function JobBoard() {
                     ) : (
                       <>
                         <span>{item}</span>
-
                         <div className="flex gap-2">
                           <button
                             type="button"
@@ -400,7 +399,6 @@ function JobBoard() {
                           >
                             Edit
                           </button>
-
                           <button
                             type="button"
                             onClick={() => removeResponsibility(index)}
@@ -428,8 +426,8 @@ function JobBoard() {
                 placeholder="Add skill"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    e.preventDefault(); // stop form submit
-                    addSkill(); // add bullet
+                    e.preventDefault();
+                    addSkill();
                   }
                 }}
               />
@@ -459,7 +457,7 @@ function JobBoard() {
         {/* JOB POSTER PREVIEW */}
         <div className="bg-white p-6 rounded-2xl shadow-md mt-6">
           <h2 className="text-xl font-bold mb-4">Job Poster Preview</h2>
-          <JobCardPreview 
+          <JobCardPreview
             ref={previewRef}
             title={title}
             responsibilities={responsibilities}
@@ -486,7 +484,8 @@ function JobBoard() {
                   </p>
                 </div>
 
-                <div className="space-x-2">
+                {/* ── Action buttons ── */}
+                <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => handleEdit(job)}
                     className="px-3 py-1 bg-yellow-500 text-white rounded-lg text-sm"
@@ -499,6 +498,8 @@ function JobBoard() {
                   >
                     Delete
                   </button>
+                  {/* ── NEW: per-job poster download ── */}
+                  <JobPosterDownloadButton job={job} />
                 </div>
               </div>
 

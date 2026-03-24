@@ -99,7 +99,10 @@ const JobCardPreview = forwardRef<JobCardPreviewHandle, JobCardPreviewProps>(
             <ul className="job-card-preview__list">
               {posterResponsibilities.map((item, index) => (
                 <li key={`poster-point-${index}`} className="job-card-preview__item">
-                  <span>{item}</span>
+                  <span className="job-card-preview__bullet" aria-hidden="true">
+                    •
+                  </span>
+                  <span className="job-card-preview__text">{item}</span>
                 </li>
               ))}
             </ul>

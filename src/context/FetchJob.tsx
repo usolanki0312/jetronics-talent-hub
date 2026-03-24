@@ -3,6 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 interface Job {
+  posterImage: string;
     id: string;
   jobId: string;
   title: string;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { db } from "../firebase/firebase.js";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
@@ -10,11 +10,15 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
+import JobCardPreview, {
+  type JobCardPreviewHandle,
+} from "../components/JobCardPreview";
 
 
 // ─────────────────────────────────────────────────────────────────────────────
 
 function JobBoard() {
+  const MAX_RESPONSIBILITY_LENGTH = 80;
   
   const [loginUser, setLoginUser] = useState("");
   const [loginPass, setLoginPass] = useState("");
@@ -62,8 +66,10 @@ function JobBoard() {
 
   const [respInput, setRespInput] = useState("");
   const [skillInput, setSkillInput] = useState("");
+  const [posterImage, setPosterImage] = useState("");
 
   const [editId, setEditId] = useState(null);
+  const previewRef = useRef<JobCardPreviewHandle>(null);
 
   const jobsCollection = collection(db, "jobs");
 
@@ -85,11 +91,17 @@ function JobBoard() {
     setPostedDate("");
     setResponsibilities([]);
     setSkills([]);
+    setPosterImage("");
     setEditId(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const generatedPoster = await previewRef.current?.generateImage();
+    if (generatedPoster) {
+      setPosterImage(generatedPoster);
+    }
 
     const jobData = {
       title,
@@ -100,6 +112,7 @@ function JobBoard() {
       postedDate,
       responsibilities,
       skills,
+      posterImage: generatedPoster || posterImage || "",
     };
 
     if (editId) {
@@ -129,10 +142,11 @@ function JobBoard() {
     setPostedDate(job.postedDate);
     setResponsibilities(job.responsibilities || []);
     setSkills(job.skills || []);
+    setPosterImage(job.posterImage || "");
   };
 
   const addResponsibility = () => {
-    const trimmed = respInput.trim();
+    const trimmed = respInput.trim().slice(0, MAX_RESPONSIBILITY_LENGTH);
     if (!trimmed) return;
 
     setResponsibilities([...responsibilities, trimmed]);
@@ -140,14 +154,15 @@ function JobBoard() {
   };
 
   const addSkill = () => {
-    if (skillInput.trim()) {
-      setSkills([...skills, skillInput]);
+    const trimmed = skillInput.trim();
+    if (trimmed) {
+      setSkills([...skills, trimmed]);
       setSkillInput("");
     }
   };
 
   const updateResponsibility = (index: number, value: string) => {
-    const trimmed = value.trim();
+    const trimmed = value.trim().slice(0, MAX_RESPONSIBILITY_LENGTH);
 
     if (!trimmed) {
       // If blank → remove
@@ -342,6 +357,7 @@ function JobBoard() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-1"
                 value={respInput}
                 onChange={(e) => setRespInput(e.target.value)}
+                maxLength={MAX_RESPONSIBILITY_LENGTH}
                 placeholder="Add responsibility"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -366,6 +382,7 @@ function JobBoard() {
                       <input
                         autoFocus
                         defaultValue={item}
+                        maxLength={MAX_RESPONSIBILITY_LENGTH}
                         onBlur={(e) =>
                           updateResponsibility(index, e.target.value)
                         }
@@ -439,6 +456,18 @@ function JobBoard() {
           </button>
         </form>
 
+        {/* JOB POSTER PREVIEW */}
+        <div className="bg-white p-6 rounded-2xl shadow-md mt-6">
+          <h2 className="text-xl font-bold mb-4">Job Poster Preview</h2>
+          <JobCardPreview 
+            ref={previewRef}
+            title={title}
+            responsibilities={responsibilities}
+            skills={skills}
+            generatedImage={posterImage}
+          />
+        </div>
+
         {/* JOB LIST */}
         <h1 className="text-3xl font-bold mb-6 mt-6 text-gray-800">
           Job Upload - Jetronixs
@@ -453,7 +482,7 @@ function JobBoard() {
                     {job.company} • {job.location}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
-                    {job.type} | {job.experience} | {job.postedDate}
+                    {job.experience} | {job.postedDate}
                   </p>
                 </div>
 

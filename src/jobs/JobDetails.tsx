@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { useJobs } from "@/context/FetchJob.js";
+import JobCardPreview from "../components/JobCardPreview";
 
 const JobDetails = () => {
   const { jobs } = useJobs();
@@ -59,13 +60,13 @@ const JobDetails = () => {
         <div className="container mx-auto max-w-4xl bg-white py-8 px-8">
           {/* Job Header */}
           <h1 className="text-3xl font-bold mb-2">{job?.title}</h1>
-          <p className="text-muted-foreground mb-6">
+          <div className="text-muted-foreground mb-6">
             {job.company && (
               <p>
                 By {job.company} / {job.postedDate}
               </p>
             )}
-          </p>
+          </div>
 
           {/* Meta Info */}
           <div className="space-y-1 text-sm mb-10">
@@ -101,6 +102,17 @@ const JobDetails = () => {
                 <li key={index}>{skill}</li>
               ))}
             </ul>
+          </section>
+
+          {/* Job Poster */}
+          <section className="mb-12">
+             <h3 className="text-xl font-semibold mb-4">Shareable Job Poster</h3>
+             <JobCardPreview 
+               title={job.title}
+                responsibilities={job.responsibilities || []}
+                skills={job.skills || []}
+                generatedImage={job.posterImage || ""}
+              />
           </section>
 
           {/* Apply Section */}

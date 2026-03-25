@@ -1,0 +1,169 @@
+.job-card-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.job-card-preview__frame,
+.job-card-preview__saved {
+  position: relative;
+  width: min(100%, 768px);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(26, 39, 63, 0.16);
+}
+
+/* ── Critical fix: give the frame a container context so cqi resolves
+      against the frame width, not the viewport.
+      html2canvas captures the frame — cqi scales with it correctly,
+      vw does not. ── */
+.job-card-preview__frame {
+  container-type: inline-size;
+}
+.job-card-preview__template,
+.job-card-preview__savedImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.job-card-preview__overlay {
+  position: absolute;
+  inset: 0;
+  color: #2d2b2e;
+  font-family: "Arial", sans-serif;
+}
+
+.job-card-preview__titleWrap {
+  position: absolute;
+  top: 24%;
+  left: 2.2%;
+  width: 80%;
+}
+
+.job-card-preview__title {
+  margin: 0;
+  font-size: clamp(1.7rem, 4.2cqi, 2.8rem);
+  line-height: 1.08;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.job-card-preview__title--medium {
+  font-size: clamp(1.4rem, 3.6cqi, 2.2rem);
+}
+
+.job-card-preview__title--small {
+  font-size: clamp(1.1rem, 3.1cqi, 1.8rem);
+  line-height: 1.05;
+}
+
+.job-card-preview__list {
+  position: absolute;
+  margin: 0;
+  padding-left: 0;
+  width: 62%;
+  color: #3f3d42;
+  top: 41.5%;
+  left: 0.5%;
+  list-style: none;
+}
+
+.job-card-preview__item {
+  display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin-bottom: 0.5rem;
+    font-size: clamp(1.2rem, 2.3cqi, 1.26rem);
+    line-height: 1.18;
+  font-weight: 600;
+}
+
+.job-card-preview__item:last-child {
+  margin-bottom: 0;
+}
+
+.job-card-preview__bullet {
+  display: block;
+  width: 0.7rem;
+  line-height: 1.18;
+  font-size: 1em;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.job-card-preview__text {
+  display: block;
+  line-height: 1.18;
+  flex: 1;
+}
+
+.job-card-preview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.job-card-preview__downloadButton {
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.5rem;
+  background: #ff6c21;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+  box-shadow: 0 10px 24px rgba(255, 108, 33, 0.22);
+}
+
+.job-card-preview__downloadButton:hover {
+  background: #ef6016;
+  transform: translateY(-1px);
+}
+
+.job-card-preview__downloadButton:focus-visible {
+  outline: 3px solid rgba(255, 108, 33, 0.28);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .job-card-preview__frame,
+  .job-card-preview__saved {
+    border-radius: 18px;
+  }
+
+  .job-card-preview__title {
+    font-size: clamp(1.1rem, 9cqi, 1.8rem);
+  }
+
+  .job-card-preview__title--medium {
+    font-size: clamp(0.95rem, 7.5cqi, 1.45rem);
+  }
+
+  .job-card-preview__title--small {
+    font-size: clamp(0.82rem, 6.5cqi, 1.2rem);
+  }
+
+  .job-card-preview__item {
+    font-size: clamp(0.72rem, 4.5cqi, 0.98rem);
+      margin-bottom: 0.6rem;
+      gap: 0.5rem;
+  }
+
+  .job-card-preview__list {
+    width: 60%;
+    top: 45.2%;
+  }
+}

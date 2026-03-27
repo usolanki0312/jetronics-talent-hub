@@ -9,7 +9,9 @@ interface Job {
   title: string;
   company: string;
   location: string;
-  type: string;
+  type?: string;
+  jobType?: string;
+  description?: string;
   experience: string;
   postedDate: string;
   responsibilities: string[];

@@ -60,6 +60,8 @@ function JobBoard() {
   const [jobId, setJobId] = useState("");
   const [experience, setExperience] = useState("");
   const [postedDate, setPostedDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [jobType, setJobType] = useState("Full Time");
 
   const [responsibilities, setResponsibilities] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -94,6 +96,8 @@ function JobBoard() {
     setJobId("");
     setExperience("");
     setPostedDate("");
+    setDescription("");
+    setJobType("Full Time");
     setResponsibilities([]);
     setSkills([]);
     setPosterImage("");
@@ -108,6 +112,18 @@ function JobBoard() {
       setPosterImage(generatedPoster);
     }
 
+    let finalResponsibilities = [...responsibilities];
+    if (respInput.trim()) {
+      finalResponsibilities.push(respInput.trim().slice(0, MAX_RESPONSIBILITY_LENGTH));
+      setRespInput("");
+    }
+
+    let finalSkills = [...skills];
+    if (skillInput.trim()) {
+      finalSkills.push(skillInput.trim());
+      setSkillInput("");
+    }
+
     const jobData = {
       title,
       company,
@@ -115,8 +131,10 @@ function JobBoard() {
       jobId,
       experience,
       postedDate,
-      responsibilities,
-      skills,
+      description,
+      jobType,
+      responsibilities: finalResponsibilities,
+      skills: finalSkills,
       posterImage: generatedPoster || posterImage || "",
     };
 
@@ -145,6 +163,8 @@ function JobBoard() {
     setJobId(job.jobId);
     setExperience(job.experience);
     setPostedDate(job.postedDate);
+    setDescription(job.description || "");
+    setJobType(job.jobType || "Full Time");
     setResponsibilities(job.responsibilities || []);
     setSkills(job.skills || []);
     setPosterImage(job.posterImage || "");
@@ -179,6 +199,22 @@ function JobBoard() {
 
   const removeResponsibility = (index: number) => {
     setResponsibilities(responsibilities.filter((_, i) => i !== index));
+  };
+
+  const updateSkill = (index: number, value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      removeSkill(index);
+      return;
+    }
+    const updated = [...skills];
+    updated[index] = trimmed;
+    setSkills(updated);
+    setEditingSkillIndex(null);
+  };
+
+  const removeSkill = (index: number) => {
+    setSkills(skills.filter((_, i) => i !== index));
   };
 
   // ── Login screen ────────────────────────────────────────────────────────
@@ -291,6 +327,21 @@ function JobBoard() {
               />
             </div>
 
+            {/* Job Type */}
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2">
+                Job Type
+              </label>
+              <select
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white"
+                value={jobType}
+                onChange={(e) => setJobType(e.target.value)}
+              >
+                <option value="Full Time">Full Time</option>
+                <option value="Contract">Contract</option>
+              </select>
+            </div>
+
             {/* Company */}
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -347,6 +398,20 @@ function JobBoard() {
                 onChange={(e) => setPostedDate(e.target.value)}
               />
             </div>
+          </div>
+
+          {/* Description */}
+          <div className="mb-4 mt-2">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Description
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter job description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+            />
           </div>
 
           {/* Responsibilities */}
@@ -439,9 +504,40 @@ function JobBoard() {
                 Add
               </button>
             </div>
-            <ul className="list-disc pl-6 mt-2 space-y-1 text-xl text-gray-700">
+            <ul className="list-disc pl-6 mt-2 space-y-2 text-sm text-gray-700">
               {skills.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index}>
+                  <div className="flex items-center justify-between gap-3">
+                    {editingSkillIndex === index ? (
+                      <input
+                        autoFocus
+                        defaultValue={item}
+                        onBlur={(e) => updateSkill(index, e.target.value)}
+                        className="border px-2 py-1 rounded w-full"
+                      />
+                    ) : (
+                      <>
+                        <span>{item}</span>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setEditingSkillIndex(index)}
+                            className="text-blue-600 text-xs"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => removeSkill(index)}
+                            className="text-red-600 text-xs"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </li>
               ))}
             </ul>
           </div>
@@ -480,7 +576,7 @@ function JobBoard() {
                     {job.company} • {job.location}
                   </p>
                   <p className="text-sm text-gray-500 mt-1">
-                    {job.experience} | {job.postedDate}
+                    {job.jobType ? `${job.jobType} | ` : ""}{job.experience} | {job.postedDate}
                   </p>
                 </div>
 
@@ -502,6 +598,15 @@ function JobBoard() {
                   <JobPosterDownloadButton job={job} />
                 </div>
               </div>
+
+              {job.description && (
+                <div className="mt-4">
+                  <h3 className="font-semibold">Description</h3>
+                  <p className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">
+                    {job.description}
+                  </p>
+                </div>
+              )}
 
               <div className="mt-4">
                 <h3 className="font-semibold">Responsibilities</h3>

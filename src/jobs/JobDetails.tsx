@@ -81,7 +81,8 @@ const JobDetails = () => {
           {/* Meta Info */}
           <div className="space-y-1 text-sm mb-10">
             <p>
-              <strong>Job Type:</strong> {job?.jobType || job?.type || "Full Time"}
+              <strong>Job Type:</strong>{" "}
+              {job?.jobType || job?.type || "Full Time"}
             </p>
             <p>
               <strong>Job Location:</strong> {job?.location}
@@ -98,41 +99,49 @@ const JobDetails = () => {
           {job?.description && (
             <section className="mb-10">
               <h3 className="text-xl font-semibold mb-4">Description</h3>
-              <p className="text-gray-700 whitespace-pre-wrap">{job.description}</p>
+              <p className="text-gray-700 whitespace-pre-wrap">
+                {job.description}
+              </p>
             </section>
           )}
 
           {/* Responsibilities */}
-          {job?.responsibilities && (Array.isArray(job.responsibilities) ? job.responsibilities.length > 0 : true) && (
-            <section className="mb-10">
-              <h3 className="text-xl font-semibold mb-4">Key Responsibilities</h3>
-              <ul className="list-disc pl-5 space-y-2">
-                {Array.isArray(job.responsibilities) ? (
-                  job.responsibilities.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))
-                ) : (
-                  <li>{job.responsibilities}</li>
-                )}
-              </ul>
-            </section>
-          )}
+          {job?.responsibilities &&
+            (Array.isArray(job.responsibilities)
+              ? job.responsibilities.length > 0
+              : true) && (
+              <section className="mb-10">
+                <h3 className="text-xl font-semibold mb-4">
+                  Key Responsibilities
+                </h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  {Array.isArray(job.responsibilities) ? (
+                    job.responsibilities.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))
+                  ) : (
+                    <li>{job.responsibilities}</li>
+                  )}
+                </ul>
+              </section>
+            )}
 
           {/* Skills */}
-          {job?.skills && (Array.isArray(job.skills) ? job.skills.length > 0 : true) && (
-            <section className="mb-12">
-              <h3 className="text-xl font-semibold mb-4">Skills</h3>
-              <ul className="list-disc pl-5 space-y-2">
-                {Array.isArray(job.skills) ? (
-                  job.skills.map((skill, index) => (
-                    <li key={index}>{skill}</li>
-                  ))
-                ) : (
-                  <li>{job.skills}</li>
-                )}
-              </ul>
-            </section>
-          )}
+          {job?.skills &&
+            (Array.isArray(job.skills) ? job.skills.length > 0 : true) && (
+              <section className="mb-12">
+                <h3 className="text-xl font-semibold mb-4">Skills</h3>
+                <ul className="list-disc pl-5 space-y-2">
+                  {Array.isArray(job.skills) ? (
+                    job.skills.map((skill, index) => (
+                      <li key={index}>{skill}</li>
+                    ))
+                  ) : (
+                    <li>{job.skills}</li>
+                  )}
+                </ul>
+              </section>
+            )}
 
           {/* Apply Section */}
           <Card className="rounded-2xl">
@@ -184,7 +193,10 @@ const JobDetails = () => {
                     setForm(initialForm);
                   } catch (err: any) {
                     console.error("FETCH ERROR:", err);
-                    alert(err.message || "An error occurred during submission. Please try again.");
+                    alert(
+                      err.message ||
+                        "An error occurred during submission. Please try again.",
+                    );
                     setForm(initialForm);
                   } finally {
                     setIsSubmitting(false);
@@ -242,7 +254,10 @@ const JobDetails = () => {
                 {/* Cover Letter */}
                 <div>
                   <label className="block mb-1 font-medium">
-                    Cover Letter <span className="text-gray-400 font-normal text-sm ml-1">(Optional)</span>
+                    Cover Letter{" "}
+                    <span className="text-gray-400 font-normal text-sm ml-1">
+                      (Optional)
+                    </span>
                   </label>
                   <textarea
                     rows={5}
@@ -295,10 +310,11 @@ const JobDetails = () => {
                 <button
                   type="submit"
                   disabled={!isFormValid || isSubmitting}
-                  className={`py-3 rounded-xl text-white transition flex items-center justify-center gap-2 ${isFormValid && !isSubmitting
-                    ? "bg-primary hover:opacity-90"
-                    : "bg-gray-400 cursor-not-allowed"
-                    }`}
+                  className={`py-3 rounded-xl text-white transition flex items-center justify-center gap-2 ${
+                    isFormValid && !isSubmitting
+                      ? "bg-primary hover:opacity-90"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
                 >
                   {isSubmitting ? (
                     <>

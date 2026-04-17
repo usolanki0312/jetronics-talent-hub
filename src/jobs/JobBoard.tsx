@@ -556,6 +556,8 @@ function JobBoard() {
           <JobCardPreview
             ref={previewRef}
             title={title}
+            location={location}
+            jobType={jobType}
             responsibilities={responsibilities}
             skills={skills}
             generatedImage={posterImage}

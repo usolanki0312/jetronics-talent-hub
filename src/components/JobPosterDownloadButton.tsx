@@ -6,6 +6,8 @@ import JobCardPreview, {
 interface Props {
   job: {
     title: string;
+    location?: string;
+    jobType?: string;
     responsibilities?: string[];
     skills?: string[];
     posterImage?: string;
@@ -37,6 +39,8 @@ const JobPosterDownloadButton = ({ job }: Props) => {
         <JobCardPreview
           ref={ref}
           title={job.title}
+          location={job.location}
+          jobType={job.jobType}
           responsibilities={job.responsibilities || []}
           skills={job.skills || []}
           generatedImage={job.posterImage || ""}

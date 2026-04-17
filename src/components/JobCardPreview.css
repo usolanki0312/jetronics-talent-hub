@@ -41,9 +41,9 @@
 
 .job-card-preview__titleWrap {
   position: absolute;
-  top: 24%;
+  top: 20%;
   left: 2.2%;
-  width: 80%;
+  width: 95%;
 }
 
 .job-card-preview__title {
@@ -52,7 +52,6 @@
   line-height: 1.08;
   font-weight: 500;
   letter-spacing: -0.03em;
-  text-transform: uppercase;
   overflow-wrap: anywhere;
 }
 
@@ -65,13 +64,22 @@
   line-height: 1.05;
 }
 
+.job-card-preview__meta {
+  margin: 0;
+  margin-top: 0.8em;
+  font-size: clamp(1rem, 1.5cqi, 0.85rem);
+  font-weight: 700;
+  /* letter-spacing: 0.04em; */
+  color: #3f3d42;
+  line-height: 0.6;
+}
 .job-card-preview__list {
   position: absolute;
   margin: 0;
   padding-left: 0;
-  width: 62%;
+  width: 65%;
   color: #3f3d42;
-  top: 41.5%;
+  top: 45%;
   left: 0.5%;
   list-style: none;
 }

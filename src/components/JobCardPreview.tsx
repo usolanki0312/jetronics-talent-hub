@@ -11,6 +11,8 @@ import "./JobCardPreview.css";
 
 interface JobCardPreviewProps {
   title: string;
+  location?: string;
+  jobType?: string;
   responsibilities: string[];
   skills: string[];
   generatedImage?: string;
@@ -24,14 +26,14 @@ export interface JobCardPreviewHandle {
 
 const JobCardPreview = forwardRef<JobCardPreviewHandle, JobCardPreviewProps>(
   (
-    { title, responsibilities, skills, generatedImage, children }: JobCardPreviewProps,
+    { title, location, jobType, responsibilities, skills, generatedImage, children }: JobCardPreviewProps,
     ref,
   ) => {
     const printRef = useRef<HTMLDivElement>(null);
 
-    const posterResponsibilities = useMemo(
-      () => responsibilities.filter(Boolean).slice(0, 4),
-      [responsibilities],
+    const posterSkills = useMemo(
+      () => skills.filter(Boolean).slice(0, 5),
+      [skills],
     );
 
     const jobTitle = title.trim() || "Job Title Preview";
@@ -94,11 +96,21 @@ const JobCardPreview = forwardRef<JobCardPreviewHandle, JobCardPreviewProps>(
               >
                 {jobTitle}
               </h2>
+              {location && (
+                <p className="job-card-preview__meta">
+                  Location - {location}
+                </p>
+              )}
+              {jobType && (
+                <p className="job-card-preview__meta">
+                  Job Type - {jobType}
+                </p>
+              )}
             </div>
 
             <ul className="job-card-preview__list">
-              {posterResponsibilities.map((item, index) => (
-                <li key={`poster-point-${index}`} className="job-card-preview__item">
+              {posterSkills.map((item, index) => (
+                <li key={`poster-skill-${index}`} className="job-card-preview__item">
                   <span className="job-card-preview__bullet" aria-hidden="true">
                     •
                   </span>
